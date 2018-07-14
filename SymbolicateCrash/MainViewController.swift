@@ -21,10 +21,15 @@ class MainViewController: NSViewController {
     }
 
     private struct ViewModel {
+
         var inputCrashLogPath = ""
         var symbolsPath = ""
         var outputCrashLogPath = ""
-        var symbolicateButtonIsEnabled = false
+
+        var symbolicateButtonIsEnabled: Bool {
+            return !inputCrashLogPath.isEmpty && !symbolsPath.isEmpty && !outputCrashLogPath.isEmpty
+        }
+
     }
 
     // MARK: - Private properties

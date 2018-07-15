@@ -170,10 +170,18 @@ class MainViewController: NSViewController {
         viewModel.progressIsStarted = true
         updateUI()
 
-        // for testing
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.viewModel.progressIsStarted = false
-            self.updateUI()
+        DispatchQueue.global(qos: .background).async {
+            let crash = self.viewModel.inputCrashLogPath
+            let symbols = self.viewModel.symbolsPath
+            let output = self.viewModel.outputCrashLogPath + "/Output.crash"
+            SymbolicateCrashService().symbolicateCrash(crash, symbols: symbols, output: output)
+
+            DispatchQueue.main.async {
+                self.viewModel.progressIsStarted = false
+                self.updateUI()
+
+                // TODO: Open output dir in Finder
+            }
         }
     }
 

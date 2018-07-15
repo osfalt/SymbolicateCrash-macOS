@@ -48,6 +48,7 @@ class MainViewController: NSViewController {
 
     private var viewModel = ViewModel()
     private var outputCrashPathWasChanged = false
+    private let symbolicateCrashService = SymbolicateCrashService()
 
     // MARK: - Lifecycle
 
@@ -170,11 +171,11 @@ class MainViewController: NSViewController {
         viewModel.progressIsStarted = true
         updateUI()
 
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             let crash = self.viewModel.inputCrashLogPath
             let symbols = self.viewModel.symbolsPath
             let output = self.viewModel.outputCrashLogPath + "/Output.crash"
-            SymbolicateCrashService().symbolicateCrash(crash, symbols: symbols, output: output)
+            self.symbolicateCrashService.symbolicateCrash(crash, symbols: symbols, output: output)
 
             DispatchQueue.main.async {
                 self.viewModel.progressIsStarted = false

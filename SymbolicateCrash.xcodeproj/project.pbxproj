@@ -14,6 +14,7 @@
 		3162BA1820F955EF006ED569 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3162BA1720F955EF006ED569 /* Assets.xcassets */; };
 		3162BA1B20F955EF006ED569 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3162BA1920F955EF006ED569 /* Main.storyboard */; };
 		3162BA2720F955EF006ED569 /* SymbolicateCrashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162BA2620F955EF006ED569 /* SymbolicateCrashTests.swift */; };
+		31CCC54D20FC06310040851C /* ShellCommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +40,7 @@
 		3162BA2220F955EF006ED569 /* SymbolicateCrashTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SymbolicateCrashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3162BA2620F955EF006ED569 /* SymbolicateCrashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolicateCrashTests.swift; sourceTree = "<group>"; };
 		3162BA2820F955EF006ED569 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellCommandExecutor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				3162BA1520F955EF006ED569 /* MainViewController.swift */,
 				312B22EC20FA60FE000A1C74 /* NSOpenPanel+Customization.swift */,
 				3126986B20FBE5FB00110BA1 /* SymbolicateCrashService.swift */,
+				31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */,
 				3162BA1C20F955EF006ED569 /* Info.plist */,
 				3162BA1D20F955EF006ED569 /* SymbolicateCrash.entitlements */,
 			);
@@ -212,6 +215,7 @@
 				312B22ED20FA60FE000A1C74 /* NSOpenPanel+Customization.swift in Sources */,
 				3162BA1620F955EF006ED569 /* MainViewController.swift in Sources */,
 				3126986C20FBE5FB00110BA1 /* SymbolicateCrashService.swift in Sources */,
+				31CCC54D20FC06310040851C /* ShellCommandExecutor.swift in Sources */,
 				3162BA1420F955EF006ED569 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

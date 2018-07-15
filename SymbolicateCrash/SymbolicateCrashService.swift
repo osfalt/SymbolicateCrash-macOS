@@ -32,42 +32,31 @@ final class SymbolicateCrashService {
 
     }
 
+    // MARK: - Private properties
+
+    private let shell = ShellCommandExecutor()
+
     // MARK: - Internal methods
 
     func symbolicateCrash(_ inputCrash: String, symbols: String, output: String) {
-//        guard let xcodeDeveloperDirPath = runShellCommand(command: Command.printXcodeDeveloperDirPath) else {
-//            assertionFailure("Can't execute '\(Command.printXcodeDeveloperDirPath)' command")
-//            return
-//        }
-//
-//        print("xcodeDeveloperDirPath: \(xcodeDeveloperDirPath)")
+        guard let xcodeDeveloperDirPath = shell.runCommand(Command.printXcodeDeveloperDirPath),
+            let xcodeLastIndex = xcodeDeveloperDirPath.range(of: ".app")?.upperBound else {
+            assertionFailure("Can't execute command: \(Command.printXcodeDeveloperDirPath)")
+            return
+        }
 
-        let commands = Command.cdToSymbolicateCrashToolPath(xcodePath: "/Applications/Xcode.app") + ";" +
+        let xcodePath = String(xcodeDeveloperDirPath[..<xcodeLastIndex])
+
+        let commands = Command.cdToSymbolicateCrashToolPath(xcodePath: xcodePath) + ";" +
             Command.exportDeveloperDir + ";" +
             Command.symbolicateCrash(inputCrash: inputCrash, symbols: symbols, output: output)
 
         print("commands: \(commands)")
 
-        guard let _ = runShellCommand(commands) else {
-            assertionFailure("Can't execute '\(commands)' commands")
+        guard let _ = shell.runCommand(commands) else {
+            assertionFailure("Can't execute commands: \(commands)")
             return
         }
-    }
-
-    // MARK: - Private methods
-
-    private func runShellCommand(_ command: String) -> String? {
-        let pipe = Pipe()
-
-        let task = Process()
-        task.launchPath = "/bin/sh"
-        task.arguments = ["-c", command]
-        task.standardOutput = pipe
-        task.launch()
-
-        let data = pipe.fileHandleForReading.readDataToEndOfFile()
-
-        return String(data: data, encoding: String.Encoding.utf8)
     }
 
 }

@@ -12,7 +12,7 @@ class MainViewController: NSViewController {
 
     // MARK: - Private types
 
-    private typealias OpenPanelCompletion = (_ filePath: String) -> Void
+    private typealias OpenPanelCompletion = (_ fileURL: URL) -> Void
 
     private enum PanelMessage {
         static let inputCrash = "Choose a crash log file"
@@ -25,21 +25,29 @@ class MainViewController: NSViewController {
         var inputCrashLogPath = ""
         var symbolsPath = ""
         var outputCrashLogPath = ""
+        var progressIsStarted = false
 
         var symbolicateButtonIsEnabled: Bool {
-            return !inputCrashLogPath.isEmpty && !symbolsPath.isEmpty && !outputCrashLogPath.isEmpty
+            return !progressIsStarted && !inputCrashLogPath.isEmpty && !symbolsPath.isEmpty && !outputCrashLogPath.isEmpty
         }
 
     }
 
     // MARK: - Private properties
 
+    @IBOutlet private weak var inputCrashButton: NSButton!
+    @IBOutlet private weak var symbolsButton: NSButton!
+    @IBOutlet private weak var outputCrashButton: NSButton!
+
     @IBOutlet private weak var inputCrashTextField: NSTextField!
     @IBOutlet private weak var symbolsTextField: NSTextField!
     @IBOutlet private weak var outputCrashTextField: NSTextField!
+
     @IBOutlet private weak var symbolicateButton: NSButton!
+    @IBOutlet private weak var progressIndicator: NSProgressIndicator!
 
     private var viewModel = ViewModel()
+    private var outputCrashPathWasChanged = false
 
     // MARK: - Lifecycle
 
@@ -76,39 +84,63 @@ class MainViewController: NSViewController {
 
     @IBAction
     private func symbolicateCrash(_ sender: NSButton) {
-        // Implement
+        symbolicate()
     }
 
     // MARK: - Private methods
 
     private func updateUI() {
+        let controlsAreEnabled = !viewModel.progressIsStarted
+
         inputCrashTextField.stringValue = viewModel.inputCrashLogPath
+        inputCrashTextField.isEnabled = controlsAreEnabled
+        inputCrashButton.isEnabled = controlsAreEnabled
+
         symbolsTextField.stringValue = viewModel.symbolsPath
+        symbolsTextField.isEnabled = controlsAreEnabled
+        symbolsButton.isEnabled = controlsAreEnabled
+
         outputCrashTextField.stringValue = viewModel.outputCrashLogPath
+        outputCrashTextField.isEnabled = controlsAreEnabled
+        outputCrashButton.isEnabled = controlsAreEnabled
+
+        symbolicateButton.keyEquivalent = "\r"
         symbolicateButton.isEnabled = viewModel.symbolicateButtonIsEnabled
+
+        if viewModel.progressIsStarted {
+            progressIndicator.startAnimation(nil)
+        } else {
+            progressIndicator.stopAnimation(nil)
+        }
     }
+
+    // MARK: File Chooser
 
     private func chooseInputCrashLog() {
         chooseFile(message: PanelMessage.inputCrash,
                    canChooseDirs: false,
-                   allowedFileTypes: ["crash"]) { filePath in
-                    viewModel.inputCrashLogPath = filePath
+                   allowedFileTypes: ["crash"]) { fileURL in
+                    viewModel.inputCrashLogPath = fileURL.path
+                    if !outputCrashPathWasChanged {
+                        viewModel.outputCrashLogPath = fileURL.deletingLastPathComponent().path
+                    }
                     updateUI()
         }
     }
 
     private func chooseSymbols() {
         chooseFile(message: PanelMessage.symbols,
-                   canChooseDirs: true) { filePath in
-                    viewModel.symbolsPath = filePath
+                   canChooseDirs: true) { fileURL in
+                    viewModel.symbolsPath = fileURL.path
                     updateUI()
         }
     }
 
     private func chooseOutputCrashLog() {
         chooseFile(message: PanelMessage.outputCrash,
-                   canChooseDirs: true) { filePath in
-                    viewModel.outputCrashLogPath = filePath
+                   canChooseDirs: true) { fileURL in
+                    outputCrashPathWasChanged = true
+                    viewModel.outputCrashLogPath = fileURL.path
                     updateUI()
         }
     }
@@ -127,8 +159,21 @@ class MainViewController: NSViewController {
 
         let modalResponse = panel.runModal()
         if modalResponse == NSApplication.ModalResponse.OK,
-            let fileUrl = panel.url {
-            completion(fileUrl.path)
+            let fileURL = panel.url {
+            completion(fileURL)
+        }
+    }
+
+    // MARK: Sybolicate
+
+    private func symbolicate() {
+        viewModel.progressIsStarted = true
+        updateUI()
+
+        // for testing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.viewModel.progressIsStarted = false
+            self.updateUI()
         }
     }
 

@@ -238,23 +238,32 @@
                                     <action selector="symbolicateCrash:" target="XfG-lQ-9wD" id="QQX-e0-BPZ"/>
                                 </connections>
                             </button>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="4HB-e2-6dc">
+                                <rect key="frame" x="365" y="19" width="16" height="16"/>
+                            </progressIndicator>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="HDL-Od-lpR" secondAttribute="trailing" constant="16" id="5ZT-t4-0fz"/>
                             <constraint firstItem="mw3-9c-TNk" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="16" id="6HO-n8-2LT"/>
                             <constraint firstAttribute="trailing" secondItem="k9x-jM-fQz" secondAttribute="trailing" constant="16" id="7MZ-JZ-aUi"/>
                             <constraint firstItem="HDL-Od-lpR" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="16" id="Pt7-Nv-ac7"/>
+                            <constraint firstItem="k9x-jM-fQz" firstAttribute="centerY" secondItem="4HB-e2-6dc" secondAttribute="centerY" id="XDm-9H-sMg"/>
                             <constraint firstItem="mw3-9c-TNk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="16" id="a4a-4c-aZg"/>
                             <constraint firstItem="HDL-Od-lpR" firstAttribute="leading" secondItem="mw3-9c-TNk" secondAttribute="trailing" constant="16" id="bRE-Od-mdm"/>
                             <constraint firstItem="k9x-jM-fQz" firstAttribute="top" secondItem="HDL-Od-lpR" secondAttribute="bottom" constant="16" id="ijG-kc-8Qj"/>
                             <constraint firstAttribute="bottom" secondItem="k9x-jM-fQz" secondAttribute="bottom" constant="16" id="tCh-2Z-ITw"/>
+                            <constraint firstItem="k9x-jM-fQz" firstAttribute="leading" secondItem="4HB-e2-6dc" secondAttribute="trailing" constant="8" id="xj7-uA-p8I"/>
                             <constraint firstItem="k9x-jM-fQz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="16" id="zkG-2X-w1u"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="inputCrashButton" destination="fUz-Wb-mJT" id="tWV-KZ-4yC"/>
                         <outlet property="inputCrashTextField" destination="LYD-SM-C9I" id="2W1-R8-fGu"/>
+                        <outlet property="outputCrashButton" destination="R9o-In-JEt" id="fUI-jM-unu"/>
                         <outlet property="outputCrashTextField" destination="jkj-hf-Qzm" id="nC6-tw-tOE"/>
+                        <outlet property="progressIndicator" destination="4HB-e2-6dc" id="Fd8-bi-gdR"/>
                         <outlet property="symbolicateButton" destination="k9x-jM-fQz" id="rmz-RK-7bb"/>
+                        <outlet property="symbolsButton" destination="wY4-84-pFR" id="VEf-HF-ukx"/>
                         <outlet property="symbolsTextField" destination="Lh2-xc-YYQ" id="hEn-H6-SVr"/>
                     </connections>
                 </viewController>

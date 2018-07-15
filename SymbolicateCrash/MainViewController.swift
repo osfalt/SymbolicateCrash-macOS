@@ -172,18 +172,35 @@ class MainViewController: NSViewController {
         updateUI()
 
         DispatchQueue.global(qos: .userInitiated).async {
-            let crash = self.viewModel.inputCrashLogPath
-            let symbols = self.viewModel.symbolsPath
-            let output = self.viewModel.outputCrashLogPath + "/Output.crash"
-            self.symbolicateCrashService.symbolicateCrash(crash, symbols: symbols, output: output)
+            let inputCrashLogPath = self.viewModel.inputCrashLogPath
+            let symbolsPath = self.viewModel.symbolsPath
+            let outputCrashLogPath = self.makeOutputCrashLogPath(from: inputCrashLogPath)
 
+            self.symbolicateCrashService.symbolicateCrash(inputCrashLogPath,
+                                                          symbols: symbolsPath,
+                                                          output: outputCrashLogPath)
             DispatchQueue.main.async {
                 self.viewModel.progressIsStarted = false
                 self.updateUI()
-
-                // TODO: Open output dir in Finder
+                self.openFinderAndSelectFile(outputCrashLogPath)
             }
         }
+    }
+
+    private func makeOutputCrashLogPath(from inputCrashLogPath: String) -> String {
+        let inputCrashLogURL = URL(fileURLWithPath: inputCrashLogPath)
+        let fileExtension = "." + inputCrashLogURL.pathExtension
+
+        var outputCrashLogName = inputCrashLogURL.lastPathComponent
+        if let fileExtensionRange = outputCrashLogName.range(of: fileExtension) {
+            outputCrashLogName.removeSubrange(fileExtensionRange)
+        }
+
+        return viewModel.outputCrashLogPath + "/\(outputCrashLogName + "-symbolicated").crash"
+    }
+
+    private func openFinderAndSelectFile(_ path: String) {
+        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
     }
 
 }

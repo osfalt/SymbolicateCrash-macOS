@@ -238,11 +238,20 @@
                                     <action selector="symbolicateCrash:" target="XfG-lQ-9wD" id="QQX-e0-BPZ"/>
                                 </connections>
                             </button>
+                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JjP-Pg-UvA" userLabel="Error Label">
+                                <rect key="frame" x="14" y="18" width="92" height="17"/>
+                                <textFieldCell key="cell" title="Error message" id="imA-om-mVw">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="4HB-e2-6dc">
                                 <rect key="frame" x="365" y="19" width="16" height="16"/>
                             </progressIndicator>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="k9x-jM-fQz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JjP-Pg-UvA" secondAttribute="trailing" constant="8" id="13E-cy-tIe"/>
                             <constraint firstAttribute="trailing" secondItem="HDL-Od-lpR" secondAttribute="trailing" constant="16" id="5ZT-t4-0fz"/>
                             <constraint firstItem="mw3-9c-TNk" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="16" id="6HO-n8-2LT"/>
                             <constraint firstAttribute="trailing" secondItem="k9x-jM-fQz" secondAttribute="trailing" constant="16" id="7MZ-JZ-aUi"/>
@@ -250,6 +259,8 @@
                             <constraint firstItem="k9x-jM-fQz" firstAttribute="centerY" secondItem="4HB-e2-6dc" secondAttribute="centerY" id="XDm-9H-sMg"/>
                             <constraint firstItem="mw3-9c-TNk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="16" id="a4a-4c-aZg"/>
                             <constraint firstItem="HDL-Od-lpR" firstAttribute="leading" secondItem="mw3-9c-TNk" secondAttribute="trailing" constant="16" id="bRE-Od-mdm"/>
+                            <constraint firstItem="k9x-jM-fQz" firstAttribute="centerY" secondItem="JjP-Pg-UvA" secondAttribute="centerY" id="ceN-gF-xMi"/>
+                            <constraint firstItem="JjP-Pg-UvA" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="16" id="f5D-wJ-0dU"/>
                             <constraint firstItem="k9x-jM-fQz" firstAttribute="top" secondItem="HDL-Od-lpR" secondAttribute="bottom" constant="16" id="ijG-kc-8Qj"/>
                             <constraint firstAttribute="bottom" secondItem="k9x-jM-fQz" secondAttribute="bottom" constant="16" id="tCh-2Z-ITw"/>
                             <constraint firstItem="k9x-jM-fQz" firstAttribute="leading" secondItem="4HB-e2-6dc" secondAttribute="trailing" constant="8" id="xj7-uA-p8I"/>
@@ -257,6 +268,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="errorLabel" destination="JjP-Pg-UvA" id="3tj-Dk-AR6"/>
                         <outlet property="inputCrashButton" destination="fUz-Wb-mJT" id="tWV-KZ-4yC"/>
                         <outlet property="inputCrashTextField" destination="LYD-SM-C9I" id="2W1-R8-fGu"/>
                         <outlet property="outputCrashButton" destination="R9o-In-JEt" id="fUI-jM-unu"/>

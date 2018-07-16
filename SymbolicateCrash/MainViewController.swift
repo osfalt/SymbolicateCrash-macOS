@@ -26,6 +26,7 @@ class MainViewController: NSViewController {
         var symbolsPath = ""
         var outputCrashLogPath = ""
         var progressIsStarted = false
+        var errorMessage = ""
 
         var symbolicateButtonIsEnabled: Bool {
             return !progressIsStarted && !inputCrashLogPath.isEmpty && !symbolsPath.isEmpty && !outputCrashLogPath.isEmpty
@@ -45,6 +46,7 @@ class MainViewController: NSViewController {
 
     @IBOutlet private weak var symbolicateButton: NSButton!
     @IBOutlet private weak var progressIndicator: NSProgressIndicator!
+    @IBOutlet private weak var errorLabel: NSTextField!
 
     private var viewModel = ViewModel()
     private var outputCrashPathWasChanged = false
@@ -107,6 +109,9 @@ class MainViewController: NSViewController {
 
         symbolicateButton.keyEquivalent = "\r"
         symbolicateButton.isEnabled = viewModel.symbolicateButtonIsEnabled
+
+        errorLabel.stringValue = viewModel.errorMessage
+        errorLabel.isHidden = viewModel.errorMessage.isEmpty
 
         if viewModel.progressIsStarted {
             progressIndicator.startAnimation(nil)

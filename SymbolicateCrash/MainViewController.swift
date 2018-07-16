@@ -57,6 +57,7 @@ class MainViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configure()
         updateUI()
     }
 
@@ -91,6 +92,12 @@ class MainViewController: NSViewController {
     }
 
     // MARK: - Private methods
+
+    private func configure() {
+        inputCrashTextField.delegate = self
+        symbolsTextField.delegate = self
+        outputCrashTextField.delegate = self
+    }
 
     private func updateUI() {
         let controlsAreEnabled = !viewModel.progressIsStarted
@@ -206,6 +213,32 @@ class MainViewController: NSViewController {
 
     private func openFinderAndSelectFile(_ path: String) {
         NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+    }
+
+}
+
+// MARK: - Protocol NSTextFieldDelegate
+
+extension MainViewController: NSTextFieldDelegate {
+
+    override func controlTextDidChange(_ notification: Notification) {
+        guard let textField = notification.object as? NSTextField else {
+            return
+        }
+
+        let newValue = textField.stringValue
+
+        if textField === inputCrashTextField {
+            viewModel.inputCrashLogPath = newValue
+        }
+        else if textField === symbolsTextField {
+            viewModel.symbolsPath = newValue
+        }
+        else if textField === outputCrashTextField {
+            viewModel.outputCrashLogPath = newValue
+        }
+
+        updateUI()
     }
 
 }

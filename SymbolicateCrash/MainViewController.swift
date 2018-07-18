@@ -52,6 +52,14 @@ class MainViewController: NSViewController {
     private var outputCrashPathWasChanged = false
     private let symbolicateCrashService = SymbolicateCrashService()
 
+    private var symbolicateCrashInfo: SymbolicateCrashInfo {
+        let inputCrashLogPath = viewModel.inputCrashLogPath
+        let symbolsPath = viewModel.symbolsPath
+        let outputCrashLogPath = makeOutputCrashLogPath(from: inputCrashLogPath)
+
+        return SymbolicateCrashInfo(inputCrash: inputCrashLogPath, symbols: symbolsPath, outputCrash: outputCrashLogPath)
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -177,25 +185,26 @@ class MainViewController: NSViewController {
         }
     }
 
-    // MARK: Sybolicate
+    // MARK: Symbolicate
 
     private func symbolicate() {
         viewModel.progressIsStarted = true
         updateUI()
 
-        DispatchQueue.global(qos: .userInitiated).async {
-            let inputCrashLogPath = self.viewModel.inputCrashLogPath
-            let symbolsPath = self.viewModel.symbolsPath
-            let outputCrashLogPath = self.makeOutputCrashLogPath(from: inputCrashLogPath)
-
-            self.symbolicateCrashService.symbolicateCrash(inputCrashLogPath,
-                                                          symbols: symbolsPath,
-                                                          output: outputCrashLogPath)
-            DispatchQueue.main.async {
-                self.viewModel.progressIsStarted = false
-                self.updateUI()
-                self.openFinderAndSelectFile(outputCrashLogPath)
+        symbolicateCrashService.symbolicateCrash(symbolicateCrashInfo, qos: .userInitiated) { [weak self] error in
+            guard let this = self else {
+                return
             }
+
+            if let error = error {
+                this.viewModel.errorMessage = "Error: \(error)"
+            } else {
+                this.viewModel.errorMessage = ""
+                this.openFinderAndSelectFile(this.symbolicateCrashInfo.outputCrash)
+            }
+
+            this.viewModel.progressIsStarted = false
+            this.updateUI()
         }
     }
 

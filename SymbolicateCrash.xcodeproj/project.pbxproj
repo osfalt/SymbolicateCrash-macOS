@@ -15,6 +15,7 @@
 		3162BA1B20F955EF006ED569 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3162BA1920F955EF006ED569 /* Main.storyboard */; };
 		3162BA2720F955EF006ED569 /* SymbolicateCrashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162BA2620F955EF006ED569 /* SymbolicateCrashTests.swift */; };
 		31CCC54D20FC06310040851C /* ShellCommandExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */; };
+		31E8943020FFE9220074989E /* SymbolicateCrashInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E8942F20FFE9220074989E /* SymbolicateCrashInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		3162BA2620F955EF006ED569 /* SymbolicateCrashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolicateCrashTests.swift; sourceTree = "<group>"; };
 		3162BA2820F955EF006ED569 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellCommandExecutor.swift; sourceTree = "<group>"; };
+		31E8942F20FFE9220074989E /* SymbolicateCrashInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolicateCrashInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,12 +84,11 @@
 		3162BA1220F955EF006ED569 /* SymbolicateCrash */ = {
 			isa = PBXGroup;
 			children = (
+				31E8943120FFE9460074989E /* Extensions */,
+				31E8942E20FFE9040074989E /* Services */,
 				3162BA3120F956EA006ED569 /* Resources */,
 				3162BA1320F955EF006ED569 /* AppDelegate.swift */,
 				3162BA1520F955EF006ED569 /* MainViewController.swift */,
-				312B22EC20FA60FE000A1C74 /* NSOpenPanel+Customization.swift */,
-				3126986B20FBE5FB00110BA1 /* SymbolicateCrashService.swift */,
-				31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */,
 				3162BA1C20F955EF006ED569 /* Info.plist */,
 				3162BA1D20F955EF006ED569 /* SymbolicateCrash.entitlements */,
 			);
@@ -110,6 +111,24 @@
 				3162BA1920F955EF006ED569 /* Main.storyboard */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		31E8942E20FFE9040074989E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				31CCC54C20FC06310040851C /* ShellCommandExecutor.swift */,
+				31E8942F20FFE9220074989E /* SymbolicateCrashInfo.swift */,
+				3126986B20FBE5FB00110BA1 /* SymbolicateCrashService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		31E8943120FFE9460074989E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				312B22EC20FA60FE000A1C74 /* NSOpenPanel+Customization.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +240,7 @@
 				3162BA1620F955EF006ED569 /* MainViewController.swift in Sources */,
 				3126986C20FBE5FB00110BA1 /* SymbolicateCrashService.swift in Sources */,
 				31CCC54D20FC06310040851C /* ShellCommandExecutor.swift in Sources */,
+				31E8943020FFE9220074989E /* SymbolicateCrashInfo.swift in Sources */,
 				3162BA1420F955EF006ED569 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

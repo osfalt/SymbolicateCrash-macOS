@@ -182,6 +182,9 @@
 					3162BA0F20F955EF006ED569 = {
 						CreatedOnToolsVersion = 9.4.1;
 						SystemCapabilities = {
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
 							com.apple.Sandbox = {
 								enabled = 0;
 							};
@@ -396,6 +399,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7F87L4L827;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = SymbolicateCrash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -417,6 +421,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7F87L4L827;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = SymbolicateCrash/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -20,20 +20,6 @@ class MainViewController: NSViewController {
         static let outputCrash = "Choose a symbolicated crash log path"
     }
 
-    private struct ViewModel {
-
-        var inputCrashLogPath = ""
-        var symbolsPath = ""
-        var outputCrashLogPath = ""
-        var progressIsStarted = false
-        var errorMessage = ""
-
-        var symbolicateButtonIsEnabled: Bool {
-            return !progressIsStarted && !inputCrashLogPath.isEmpty && !symbolsPath.isEmpty && !outputCrashLogPath.isEmpty
-        }
-
-    }
-
     // MARK: - Private properties
 
     @IBOutlet private weak var inputCrashButton: NSButton!
@@ -48,7 +34,7 @@ class MainViewController: NSViewController {
     @IBOutlet private weak var progressIndicator: NSProgressIndicator!
     @IBOutlet private weak var errorLabel: NSTextField!
 
-    private var viewModel = ViewModel()
+    private var viewModel = MainViewModel()
     private var outputCrashPathWasChanged = false
     private let symbolicateCrashService = SymbolicateCrashService()
 

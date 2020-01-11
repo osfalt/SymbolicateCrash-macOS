@@ -98,8 +98,8 @@
 		3162BA1220F955EF006ED569 /* SymbolicateCrash */ = {
 			isa = PBXGroup;
 			children = (
-				3132E5BF23CA194800490A0A /* Helpers */,
 				31E8943120FFE9460074989E /* Extensions */,
+				3132E5BF23CA194800490A0A /* Helpers */,
 				31BAE85D23C9EBE70077D826 /* Models */,
 				31E8942E20FFE9040074989E /* Services */,
 				31CCFB6323C9ECA500585518 /* Main */,

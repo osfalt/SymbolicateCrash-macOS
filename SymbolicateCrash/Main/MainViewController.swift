@@ -24,15 +24,13 @@ class MainViewController: NSViewController {
     @IBOutlet private weak var errorLabel: NSTextField!
 
     private var viewModel: MainViewModelProtocol = MainViewModel()
-    private let symbolicateCrashService = SymbolicateCrashService()
 
-//    private var symbolicateCrashInfo: SymbolicateCrashInfo {
-//        let inputCrashLogPath = viewModel.inputCrashLogPath
-//        let symbolsPath = viewModel.symbolsPath
-//        let outputCrashLogPath = makeOutputCrashLogPath(from: inputCrashLogPath)
-//
-//        return SymbolicateCrashInfo(inputCrash: inputCrashLogPath, symbols: symbolsPath, outputCrash: outputCrashLogPath)
-//    }
+    private var inputCrashLogPathToken: String?
+    private var symbolsPathToken: String?
+    private var outputCrashLogPathToken: String?
+    private var symbolicateButtonIsEnabledToken: String?
+    private var errorMessageToken: String?
+    private var progressIsStartedToken: String?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -40,6 +38,15 @@ class MainViewController: NSViewController {
 
         configure()
         bindToViewModel()
+    }
+
+    deinit {
+        viewModel.inputCrashLogPath.unbind(inputCrashLogPathToken)
+        viewModel.symbolsPath.unbind(symbolsPathToken)
+        viewModel.outputCrashLogPath.unbind(outputCrashLogPathToken)
+        viewModel.errorMessage.unbind(errorMessageToken)
+        viewModel.progressIsStarted.unbind(progressIsStartedToken)
+        viewModel.symbolicateButtonIsEnabled.unbind(symbolicateButtonIsEnabledToken)
     }
 
     // MARK: - Actions
@@ -68,26 +75,40 @@ class MainViewController: NSViewController {
         inputCrashTextField.delegate = self
         symbolsTextField.delegate = self
         outputCrashTextField.delegate = self
-
         symbolicateButton.keyEquivalent = "\r"
     }
 
     private func bindToViewModel() {
-        viewModel.inputCrashLogPath.bind { [weak self] in self?.inputCrashTextField.stringValue = $0 }
-        viewModel.symbolsPath.bind { [weak self] in self?.symbolsTextField.stringValue = $0 }
-        viewModel.outputCrashLogPath.bind { [weak self] in self?.outputCrashTextField.stringValue = $0 }
+        inputCrashLogPathToken = viewModel.inputCrashLogPath.bind { [weak self] in
+            self?.inputCrashTextField.stringValue = $0
+        }
 
-        viewModel.errorMessage.bind { [weak self] errorMessage in
+        symbolsPathToken = viewModel.symbolsPath.bind { [weak self] in
+            self?.symbolsTextField.stringValue = $0
+        }
+
+        outputCrashLogPathToken = viewModel.outputCrashLogPath.bind { [weak self] in
+            self?.outputCrashTextField.stringValue = $0
+        }
+
+        symbolicateButtonIsEnabledToken = viewModel.symbolicateButtonIsEnabled.bind { [weak self] in
+            self?.symbolicateButton.isEnabled = $0
+        }
+
+        errorMessageToken = viewModel.errorMessage.bind { [weak self] errorMessage in
             guard let self = self else { return }
             self.errorLabel.isHidden = errorMessage == nil
             self.errorLabel.stringValue = errorMessage ?? ""
         }
 
-        viewModel.progressIsStarted.bind { [weak self] in
+        progressIsStartedToken = viewModel.progressIsStarted.bind { [weak self] progressIsStarted in
             guard let self = self else { return }
-            $0 ? self.progressIndicator.startAnimation(nil) : self.progressIndicator.stopAnimation(nil)
 
-            let controlsAreEnabled = !$0
+            progressIsStarted
+                ? self.progressIndicator.startAnimation(nil)
+                : self.progressIndicator.stopAnimation(nil)
+
+            let controlsAreEnabled = !progressIsStarted
             self.inputCrashTextField.isEnabled = controlsAreEnabled
             self.inputCrashButton.isEnabled = controlsAreEnabled
 
@@ -97,43 +118,6 @@ class MainViewController: NSViewController {
             self.outputCrashTextField.isEnabled = controlsAreEnabled
             self.outputCrashButton.isEnabled = controlsAreEnabled
         }
-
-//        symbolicateButton.isEnabled = viewModel.symbolicateButtonIsEnabled
-    }
-
-    // MARK: Symbolicate
-    private func symbolicate() {
-//        viewModel.progressIsStarted = true
-//        updateUI()
-
-//        symbolicateCrashService.symbolicateCrash(symbolicateCrashInfo, qos: .userInitiated) { [weak self] error in
-//            guard let this = self else {
-//                return
-//            }
-//
-//            if let error = error {
-//                this.viewModel.errorMessage = "Error: \(error)"
-//            } else {
-//                this.viewModel.errorMessage = ""
-//                this.openFinderAndSelectFile(this.symbolicateCrashInfo.outputCrash)
-//            }
-//
-//            this.viewModel.progressIsStarted = false
-//            this.updateUI()
-//        }
-    }
-
-    private func makeOutputCrashLogPath(from inputCrashLogPath: String) -> String {
-        let inputCrashLogURL = URL(fileURLWithPath: inputCrashLogPath)
-        let fileExtension = "." + inputCrashLogURL.pathExtension
-
-        var outputCrashLogName = inputCrashLogURL.lastPathComponent
-        if let fileExtensionRange = outputCrashLogName.range(of: fileExtension) {
-            outputCrashLogName.removeSubrange(fileExtensionRange)
-        }
-
-        return ""
-//        return viewModel.outputCrashLogPath + "/\(outputCrashLogName + "-symbolicated").crash"
     }
 
 }
@@ -147,19 +131,15 @@ extension MainViewController: NSTextFieldDelegate {
             return
         }
 
-//        let newValue = textField.stringValue
-//
-//        if textField === inputCrashTextField {
-//            viewModel.inputCrashLogPath = newValue
-//        }
-//        else if textField === symbolsTextField {
-//            viewModel.symbolsPath = newValue
-//        }
-//        else if textField === outputCrashTextField {
-//            viewModel.outputCrashLogPath = newValue
-//        }
-//
-//        updateUI()
+        let newValue = textField.stringValue
+
+        if textField === inputCrashTextField {
+            viewModel.inputCrashLogPath.value = newValue
+        } else if textField === symbolsTextField {
+            viewModel.symbolsPath.value = newValue
+        } else if textField === outputCrashTextField {
+            viewModel.outputCrashLogPath.value = newValue
+        }
     }
 
 }

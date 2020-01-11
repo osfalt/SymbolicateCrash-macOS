@@ -34,34 +34,29 @@ class MainViewModel: MainViewModelProtocol {
     let outputCrashLogPath = DynamicProperty<String>("")
     let errorMessage = DynamicProperty<String?>(nil)
     let progressIsStarted = DynamicProperty<Bool>(false)
-    let symbolicateButtonIsEnabled: DynamicProperty<Bool> = .init(false)
-
-    var symbolicateCrashInfo: SymbolicateCrashInfo {
-//        let outputCrashLogPath = makeOutputCrashLogPath(from: inputCrashLogPath)
-        return SymbolicateCrashInfo(inputCrash: inputCrashLogPath.value,
-                                    symbols: symbolsPath.value,
-                                    outputCrash: "outputCrashLogPath")
-    }
-
-//    return !progressIsStarted.value
-//        && !inputCrashLogPath.value.isEmpty
-//        && !symbolsPath.value.isEmpty
-//        && !outputCrashLogPath.value.isEmpty
+    let symbolicateButtonIsEnabled = DynamicProperty<Bool>(false)
 
     // MARK: - Private properties
     private let router: MainRouterProtocol = MainRouter()
     private let symbolicateCrashService = SymbolicateCrashService()
 
     private var outputCrashPathWasChanged = false
+    private var inputCrashLogPathToken: String?
+    private var symbolsPathToken: String?
+    private var outputCrashLogPathToken: String?
+    private var progressIsStartedToken: String?
 
     // MARK: - Init
     init() {
+        observeForSymbolicateButtonEnabledValue()
     }
 
-//    convenience init(router: MainRouterProtocol, symbolicateCrashService: SymbolicateCrashService) {
-//        self.router = router
-//        self.symbolicateCrashService = symbolicateCrashService
-//    }
+    deinit {
+        inputCrashLogPath.unbind(inputCrashLogPathToken)
+        symbolsPath.unbind(symbolsPathToken)
+        outputCrashLogPath.unbind(outputCrashLogPathToken)
+        progressIsStarted.unbind(progressIsStartedToken)
+    }
 
     // MARK: - Internal methods
     func selectInputCrashLogButtonDidTap() {
@@ -76,7 +71,8 @@ class MainViewModel: MainViewModelProtocol {
 
     func selectSymbolsButtonDidTap() {
         router.openPanelForSymbols { [weak self] fileURL in
-            self?.symbolsPath.value = fileURL.path
+            guard let self = self else { return }
+            self.symbolsPath.value = fileURL.path
         }
     }
 
@@ -89,7 +85,64 @@ class MainViewModel: MainViewModelProtocol {
     }
 
     func symbolicateButtonDidTap() {
+        progressIsStarted.value = true
+        errorMessage.value = nil
 
+        let outputCrashLogPath = makeOutputCrashLogPath(from: inputCrashLogPath.value)
+        let symbolicateCrashInfo = SymbolicateCrashInfo(inputCrash: inputCrashLogPath.value,
+                                                        symbols: symbolsPath.value,
+                                                        outputCrash: outputCrashLogPath)
+
+        symbolicateCrashService.symbolicateCrash(symbolicateCrashInfo, qos: .userInitiated) { [weak self] error in
+            guard let self = self else { return }
+
+            if let error = error {
+                self.errorMessage.value = "Error: \(error)"
+            } else {
+                self.errorMessage.value = nil
+                self.router.openFinderAndSelectFile(at: outputCrashLogPath)
+            }
+
+            self.progressIsStarted.value = false
+        }
+    }
+
+    // MARK: - Private methods
+    private func makeOutputCrashLogPath(from inputCrashLogPath: String) -> String {
+        let inputCrashLogURL = URL(fileURLWithPath: inputCrashLogPath)
+        let fileExtension = "." + inputCrashLogURL.pathExtension
+
+        var outputCrashLogName = inputCrashLogURL.lastPathComponent
+        if let fileExtensionRange = outputCrashLogName.range(of: fileExtension) {
+            outputCrashLogName.removeSubrange(fileExtensionRange)
+        }
+
+        return outputCrashLogPath.value + "/\(outputCrashLogName + "-symbolicated").crash"
+    }
+
+    private func observeForSymbolicateButtonEnabledValue() {
+        inputCrashLogPathToken = inputCrashLogPath.bind { [weak self] _ in
+            self?.updateSymbolicateButtonEnabledValue()
+        }
+
+        symbolsPathToken = symbolsPath.bind { [weak self] _ in
+            self?.updateSymbolicateButtonEnabledValue()
+        }
+
+        outputCrashLogPathToken = outputCrashLogPath.bind { [weak self] _ in
+            self?.updateSymbolicateButtonEnabledValue()
+        }
+
+        progressIsStartedToken = progressIsStarted.bind { [weak self] _ in
+            self?.updateSymbolicateButtonEnabledValue()
+        }
+    }
+
+    private func updateSymbolicateButtonEnabledValue() {
+        symbolicateButtonIsEnabled.value = !progressIsStarted.value
+            && !inputCrashLogPath.value.isEmpty
+            && !symbolsPath.value.isEmpty
+            && !outputCrashLogPath.value.isEmpty
     }
 
 }

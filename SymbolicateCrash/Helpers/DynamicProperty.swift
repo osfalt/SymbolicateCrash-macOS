@@ -14,23 +14,36 @@ class DynamicProperty<T> {
     typealias Listener = (T) -> Void
 
     // MARK: - Internal properties
-    var listener: Listener?
-
     var value: T {
         didSet {
-            listener?(value)
+            listeners.values.forEach { $0(value) }
         }
     }
 
+    // MARK: - Private properties
+    private var listeners: [String: Listener] = [:]
+
     // MARK: - Init
-    init(_ v: T) {
-        value = v
+    init(_ value: T) {
+        self.value = value
     }
 
     // MARK: - Internal methods
-    func bind(_ listener: Listener?) {
-        self.listener = listener
-        listener?(value)
+    @discardableResult
+    func bind(_ listener: @escaping Listener) -> String {
+        let token = UUID().uuidString
+        listeners[token] = listener
+        listener(value)
+        return token
+    }
+
+    func unbind(_ token: String?) {
+        guard let token = token else { return }
+        listeners.removeValue(forKey: token)
+    }
+
+    func unbindAll() {
+        listeners.removeAll()
     }
 
 }

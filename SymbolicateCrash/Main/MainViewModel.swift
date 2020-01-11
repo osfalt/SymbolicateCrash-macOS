@@ -37,8 +37,8 @@ class MainViewModel: MainViewModelProtocol {
     let symbolicateButtonIsEnabled = DynamicProperty<Bool>(false)
 
     // MARK: - Private properties
-    private let router: MainRouterProtocol = MainRouter()
-    private let symbolicateCrashService = SymbolicateCrashService()
+    private let router: MainRouterProtocol
+    private let symbolicateCrashService: SymbolicateCrashServiceProtocol
 
     private var outputCrashPathWasChanged = false
     private var inputCrashLogPathToken: String?
@@ -47,7 +47,9 @@ class MainViewModel: MainViewModelProtocol {
     private var progressIsStartedToken: String?
 
     // MARK: - Init
-    init() {
+    init(router: MainRouterProtocol, symbolicateCrashService: SymbolicateCrashServiceProtocol) {
+        self.router = router
+        self.symbolicateCrashService = symbolicateCrashService
         observeForSymbolicateButtonEnabledValue()
     }
 

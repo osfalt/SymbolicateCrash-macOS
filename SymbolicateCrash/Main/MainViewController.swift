@@ -23,7 +23,9 @@ class MainViewController: NSViewController {
     @IBOutlet private weak var progressIndicator: NSProgressIndicator!
     @IBOutlet private weak var errorLabel: NSTextField!
 
-    private var viewModel: MainViewModelProtocol = MainViewModel()
+    // TODO: Inject via DI
+    private var viewModel: MainViewModelProtocol = MainViewModel(router: MainRouter(),
+                                                                 symbolicateCrashService: SymbolicateCrashService())
 
     private var inputCrashLogPathToken: String?
     private var symbolsPathToken: String?

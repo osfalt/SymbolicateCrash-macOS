@@ -8,14 +8,21 @@
 
 import Foundation
 
-final class SymbolicateCrashService {
-
-    // MARK: - Internal types
+// MARK: - Protocol
+protocol SymbolicateCrashServiceProtocol: AnyObject {
 
     typealias SymbolicateCrashCompletion = (_ error: String?) -> Void
 
-    // MARK: - Private types
+    func symbolicateCrash(_ crashInfo: SymbolicateCrashInfo,
+                          qos: DispatchQoS.QoSClass,
+                          completion: @escaping SymbolicateCrashCompletion)
 
+}
+
+// MARK: - Implementation
+final class SymbolicateCrashService: SymbolicateCrashServiceProtocol {
+
+    // MARK: - Constants
     private enum Command {
 
         static var printXcodeDeveloperDirPath: String {
@@ -37,11 +44,9 @@ final class SymbolicateCrashService {
     }
 
     // MARK: - Private properties
-
     private let shell = ShellCommandExecutor()
 
     // MARK: - Internal methods
-
     func symbolicateCrash(_ crashInfo: SymbolicateCrashInfo,
                           qos: DispatchQoS.QoSClass,
                           completion: @escaping SymbolicateCrashCompletion) {

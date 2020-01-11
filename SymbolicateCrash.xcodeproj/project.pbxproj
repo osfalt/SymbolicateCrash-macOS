@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3126986C20FBE5FB00110BA1 /* SymbolicateCrashService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3126986B20FBE5FB00110BA1 /* SymbolicateCrashService.swift */; };
 		312B22ED20FA60FE000A1C74 /* NSOpenPanel+Customization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312B22EC20FA60FE000A1C74 /* NSOpenPanel+Customization.swift */; };
+		3132E5BE23CA144A00490A0A /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3132E5BD23CA144A00490A0A /* MainRouter.swift */; };
+		3132E5C123CA196E00490A0A /* DynamicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3132E5C023CA196E00490A0A /* DynamicProperty.swift */; };
 		3162BA1420F955EF006ED569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162BA1320F955EF006ED569 /* AppDelegate.swift */; };
 		3162BA1620F955EF006ED569 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3162BA1520F955EF006ED569 /* MainViewController.swift */; };
 		3162BA1820F955EF006ED569 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3162BA1720F955EF006ED569 /* Assets.xcassets */; };
@@ -32,6 +34,8 @@
 /* Begin PBXFileReference section */
 		3126986B20FBE5FB00110BA1 /* SymbolicateCrashService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolicateCrashService.swift; sourceTree = "<group>"; };
 		312B22EC20FA60FE000A1C74 /* NSOpenPanel+Customization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOpenPanel+Customization.swift"; sourceTree = "<group>"; };
+		3132E5BD23CA144A00490A0A /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
+		3132E5C023CA196E00490A0A /* DynamicProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProperty.swift; sourceTree = "<group>"; };
 		3162BA1020F955EF006ED569 /* SymbolicateCrash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SymbolicateCrash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3162BA1320F955EF006ED569 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3162BA1520F955EF006ED569 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -65,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3132E5BF23CA194800490A0A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3132E5C023CA196E00490A0A /* DynamicProperty.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		3162BA0720F955EF006ED569 = {
 			isa = PBXGroup;
 			children = (
@@ -86,10 +98,11 @@
 		3162BA1220F955EF006ED569 /* SymbolicateCrash */ = {
 			isa = PBXGroup;
 			children = (
+				3132E5BF23CA194800490A0A /* Helpers */,
 				31E8943120FFE9460074989E /* Extensions */,
 				31BAE85D23C9EBE70077D826 /* Models */,
 				31E8942E20FFE9040074989E /* Services */,
-				31CCFB6323C9ECA500585518 /* Views */,
+				31CCFB6323C9ECA500585518 /* Main */,
 				3162BA3120F956EA006ED569 /* Resources */,
 				3162BA1320F955EF006ED569 /* AppDelegate.swift */,
 				3162BA1C20F955EF006ED569 /* Info.plist */,
@@ -124,13 +137,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		31CCFB6323C9ECA500585518 /* Views */ = {
+		31CCFB6323C9ECA500585518 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				3162BA1520F955EF006ED569 /* MainViewController.swift */,
 				31CCFB6423C9F01F00585518 /* MainViewModel.swift */,
+				3132E5BD23CA144A00490A0A /* MainRouter.swift */,
 			);
-			path = Views;
+			path = Main;
 			sourceTree = "<group>";
 		};
 		31E8942E20FFE9040074989E /* Services */ = {
@@ -261,6 +275,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				31CCFB6523C9F01F00585518 /* MainViewModel.swift in Sources */,
+				3132E5BE23CA144A00490A0A /* MainRouter.swift in Sources */,
+				3132E5C123CA196E00490A0A /* DynamicProperty.swift in Sources */,
 				312B22ED20FA60FE000A1C74 /* NSOpenPanel+Customization.swift in Sources */,
 				3162BA1620F955EF006ED569 /* MainViewController.swift in Sources */,
 				3126986C20FBE5FB00110BA1 /* SymbolicateCrashService.swift in Sources */,

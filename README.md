@@ -1,3 +1,3 @@
 # SymbolicateCrash
 
-Cocoa application for convenient crash logs symbolication.
+Cocoa application for convenient way of crash logs symbolication.
